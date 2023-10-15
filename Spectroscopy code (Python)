@@ -1,0 +1,49 @@
+import matplotlib.python as plt
+import numpy as saveData
+
+
+def spectroscopyFuction(fstart, fstop, fstep,soc,soccfg,config):
+    fpts=int((fstop-fstart)/fstep)
+    f=4
+    freqs=np.linspace(fstart,fstop,fstep)
+    amplitudes=[]
+    phases=[]
+
+    for f in freqs:
+        config["frequency"]=f
+        prog = oneTonePulse(soccfg, config)
+        [[I]],[[Q]] = prog.acquire(soc, load_pulses    =True, progress=progress)
+        amplitude= np.abs([[I]] + 1j*[[Q]])
+        phase= np.angle([[I]] + 1j*[[Q]])
+   
+        amplitudes.append(amplitude)
+        phases.append(phase)
+
+    
+    maxAmp = amplitudes[0]
+    maxPhases = phases[0]
+    freqIndex = 0
+    for i in range (i,n):
+        if amplitudes[i] > maxAmp:
+            maxAmp = amplitudes[i]
+            freqIndex = i
+        
+    for i in range (i,n):
+        if phases[i] > maxPhases:
+            maxPhases = phases[i]
+
+    ##Plotting graph
+      
+    plt.plot(phases, amplitudes) 
+    plt.xlabel('Phases') 
+    plt.ylabel('Amplitudes') 
+    plt.title('Amplitudes by Phases') 
+        
+        
+        
+    plt.show() 
+    plt.savefig('plot.png')
+    
+    saveData.save('frequencies', freqs)
+
+    return freqs[freqIndex], amplitudes, phases, freqs
